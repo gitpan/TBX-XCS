@@ -56,7 +56,6 @@
             "File::Temp" : "0",
             "FindBin" : "0",
             "Path::Tiny" : "0",
-            "Test::Base" : "0",
             "Test::Exception" : "0",
             "Test::More" : "0.88",
             "Test::Warn" : "0"
@@ -66,7 +65,7 @@
    "provides" : {
       "TBX::XCS" : {
          "file" : "lib/TBX/XCS.pm",
-         "version" : "0.01"
+         "version" : "0.02"
       }
    },
    "release_status" : "stable",
@@ -85,7 +84,7 @@
          "web" : "https://github.com/byutrg/TBX-XCS"
       }
    },
-   "version" : "0.01",
+   "version" : "0.02",
    "x_BuiltWith" : {
       "modules" : {
          "Carp" : "1.26",
@@ -97,14 +96,13 @@
          "Module::Build" : "0.4002",
          "Path::Tiny" : "0.015",
          "Pod::Coverage::TrustPod" : "0.100002",
-         "Test::Base" : "0.60",
          "Test::CPAN::Meta" : "0.23",
          "Test::Exception" : "0.31",
          "Test::More" : "0.98",
          "Test::Pod" : "1.45",
          "Test::Pod::Coverage" : "1.08",
          "Test::Warn" : "0.24",
-         "XML::Twig" : "3.42",
+         "XML::Twig" : "3.44",
          "feature" : "1.27",
          "perl" : "NA(skipped: perl)",
          "strict" : "1.07",

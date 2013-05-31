@@ -16,8 +16,8 @@ t/00-compile.t
 t/000-report-versions-tiny.t
 t/01-data.t
 t/01-warnings.t
-t/TestRNG.pm
 t/corpus/datatype.xcs
+t/corpus/levels.xcs
 t/corpus/small.xcs
 t/corpus/termCompList.xcs
 t/perlcriticrc

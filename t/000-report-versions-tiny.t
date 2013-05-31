@@ -57,7 +57,6 @@ eval { $v .= pmver('FindBin','any version') };
 eval { $v .= pmver('Module::Build','0.3601') };
 eval { $v .= pmver('Path::Tiny','any version') };
 eval { $v .= pmver('Pod::Coverage::TrustPod','any version') };
-eval { $v .= pmver('Test::Base','any version') };
 eval { $v .= pmver('Test::CPAN::Meta','any version') };
 eval { $v .= pmver('Test::Exception','any version') };
 eval { $v .= pmver('Test::More','0.88') };

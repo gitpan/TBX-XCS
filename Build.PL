@@ -17,7 +17,7 @@ my %module_build_args = (
     "Nathan Glenn <garfieldnate\@gmail.com>"
   ],
   "dist_name" => "TBX-XCS",
-  "dist_version" => "0.01",
+  "dist_version" => "0.02",
   "license" => "perl",
   "module_name" => "TBX::XCS",
   "recommends" => {},
@@ -38,7 +38,6 @@ my %module_build_args = (
     "File::Temp" => 0,
     "FindBin" => 0,
     "Path::Tiny" => 0,
-    "Test::Base" => 0,
     "Test::Exception" => 0,
     "Test::More" => "0.88",
     "Test::Warn" => 0

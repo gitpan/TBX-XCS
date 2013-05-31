@@ -13,7 +13,7 @@ use XML::Twig;
 use feature 'say';
 use Carp;
 use Data::Dumper;
-our $VERSION = '0.01'; # VERSION
+our $VERSION = '0.02'; # VERSION
 
 # ABSTRACT: Extract data from an XCS file
 
@@ -230,7 +230,9 @@ sub _dataCat {
     (my $type = $el->tag) =~ s/Spec$//;
     my $data = {};
     $data->{name} = $el->att('name');
-    $data->{datcatId} = $el->att('datcatId');
+    if( my $datCatId = $el->att('datcatId') ){
+        $data->{datCatId} = $datCatId;
+    }
     #If the data-category does not take a picklist,
     #if its data type is the same as that defined for the meta data element in the core-structure DTD,
     #if its meta data element does not take a target attribute, and
@@ -252,10 +254,12 @@ sub _dataCat {
     }else{
         $datatype = $default_datatype{$type};
     }
-    $data->{datatype} = $datatype;
-
-    if($datatype eq 'picklist'){
-        $data->{choices} = [split ' ', $contents->text];
+    #ignore datatypes for termCompList
+    if($type ne 'termCompList'){
+        $data->{datatype} = $datatype;
+        if($datatype eq 'picklist'){
+            $data->{choices} = [split ' ', $contents->text];
+        }
     }
     if ($contents->att('forTermComp')){
         $data->{forTermComp} = $contents->att('forTermComp') eq 'yes' ? 1 : 0;
@@ -269,6 +273,10 @@ sub _dataCat {
     if($type eq 'descrip'){
         if(my $levels = $el->first_child('levels')->text){
             $data->{levels} = [split ' ', $levels];
+            if(!_levels_ok($data->{levels})){
+                croak "Bad levels in descrip[\@name=$data->{name}]. " .
+                    '<levels> may only include term, termEntry, and langSet';
+            }
         }else{
             #todo: not sure if this is the right behavior for an empty <levels/>
             $data->{levels} = [qw(langSet termEntry term)]
@@ -277,6 +285,13 @@ sub _dataCat {
     #also, check page 10 of the OSCAR PDF for elements that can occur at multiple levels
     push @{ $twig->{xcs_constraints}->{datCatSet}->{$type} }, $data;
     return;
+}
+
+#verify the contents of <levels>
+sub _levels_ok {
+    my ($levels) = @_;
+    my @invalid = grep { $_ !~ /^(?:term|termEntry|langSet)$/ } @$levels;
+    return (@invalid == 0);
 }
 
 1;
@@ -291,7 +306,7 @@ TBX::XCS - Extract data from an XCS file
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
@@ -375,13 +390,12 @@ would yield the data structure below:
       [
         {
           'datatype' => 'noteText',
-          'datcatId' => 'ISO12620A-0503',
+          'datCatId' => 'ISO12620A-0503',
           'levels' => ['term'],
           'name' => 'context'
         },
         {
           'datatype' => 'noteText',
-          'datcatId' => '',
           'levels' => ['langSet', 'termEntry', 'term'],
           'name' => 'descripFoo'
         }
@@ -389,13 +403,12 @@ would yield the data structure below:
       'termNote' => [{
           'choices' => ['animate', 'inanimate', 'otherAnimacy'],
           'datatype' => 'picklist',
-          'datcatId' => 'ISO12620A-020204',
+          'datCatId' => 'ISO12620A-020204',
           'forTermComp' => 1,
           'name' => 'animacy'
         }],
       'xref' => [{
           'datatype' => 'plainText',
-          'datcatId' => '',
           'name' => 'xrefFoo',
           'targetType' => 'external'
         }]

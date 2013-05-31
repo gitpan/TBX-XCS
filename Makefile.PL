@@ -35,12 +35,11 @@ my %WriteMakefileArgs = (
     "File::Temp" => 0,
     "FindBin" => 0,
     "Path::Tiny" => 0,
-    "Test::Base" => 0,
     "Test::Exception" => 0,
     "Test::More" => "0.88",
     "Test::Warn" => 0
   },
-  "VERSION" => "0.01",
+  "VERSION" => "0.02",
   "test" => {
     "TESTS" => "t/*.t"
   }

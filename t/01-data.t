@@ -54,27 +54,32 @@ sub get_expected_data_cat {
       [
         {
           'datatype' => 'noteText',
-          'datcatId' => 'ISO12620A-0503',
+          'datCatId' => 'ISO12620A-0503',
           'levels' => ['term'],
           'name' => 'context'
         },
         {
           'datatype' => 'noteText',
-          'datcatId' => '',
           'levels' => ['langSet', 'termEntry', 'term'],
           'name' => 'descripFoo'
         }
       ],
+  'termCompList' => [
+    {
+      'datCatId' => 'ISO12620A-020802',
+      'forTermComp' => 1,
+      'name' => 'termElement'
+    }
+  ],
       'termNote' => [{
           'choices' => ['animate', 'inanimate', 'otherAnimacy'],
           'datatype' => 'picklist',
-          'datcatId' => 'ISO12620A-020204',
+          'datCatId' => 'ISO12620A-020204',
           'forTermComp' => 1,
           'name' => 'animacy'
         }],
       'xref' => [{
           'datatype' => 'plainText',
-          'datcatId' => '',
           'name' => 'xrefFoo',
           'targetType' => 'external'
         }]
