@@ -50,16 +50,20 @@ sub pmver {
 
 eval { $v .= pmver('Carp','any version') };
 eval { $v .= pmver('Data::Dumper','any version') };
+eval { $v .= pmver('Exporter::Easy','any version') };
 eval { $v .= pmver('File::Find','any version') };
 eval { $v .= pmver('File::Slurp','any version') };
 eval { $v .= pmver('File::Temp','any version') };
 eval { $v .= pmver('FindBin','any version') };
+eval { $v .= pmver('JSON','any version') };
 eval { $v .= pmver('Module::Build','0.3601') };
 eval { $v .= pmver('Path::Tiny','any version') };
 eval { $v .= pmver('Pod::Coverage::TrustPod','any version') };
+eval { $v .= pmver('Test::Base','any version') };
 eval { $v .= pmver('Test::CPAN::Meta','any version') };
 eval { $v .= pmver('Test::Exception','any version') };
 eval { $v .= pmver('Test::More','0.88') };
+eval { $v .= pmver('Test::NoWarnings','any version') };
 eval { $v .= pmver('Test::Pod','1.41') };
 eval { $v .= pmver('Test::Pod::Coverage','1.08') };
 eval { $v .= pmver('Test::Warn','any version') };

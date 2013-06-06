@@ -2,7 +2,8 @@
 use strict;
 use warnings;
 use Test::More 0.88;
-plan tests => 10;
+plan tests => 11;
+use Test::NoWarnings;
 use TBX::XCS;
 use Path::Tiny;
 use FindBin qw($Bin);
@@ -67,7 +68,7 @@ sub get_expected_data_cat {
   'termCompList' => [
     {
       'datCatId' => 'ISO12620A-020802',
-      'forTermComp' => 1,
+      'forTermComp' => 'yes',
       'name' => 'termElement'
     }
   ],
@@ -75,7 +76,7 @@ sub get_expected_data_cat {
           'choices' => ['animate', 'inanimate', 'otherAnimacy'],
           'datatype' => 'picklist',
           'datCatId' => 'ISO12620A-020204',
-          'forTermComp' => 1,
+          'forTermComp' => 'yes',
           'name' => 'animacy'
         }],
       'xref' => [{

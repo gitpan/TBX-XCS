@@ -18,12 +18,16 @@ my %WriteMakefileArgs = (
     "Module::Build" => "0.3601"
   },
   "DISTNAME" => "TBX-XCS",
-  "EXE_FILES" => [],
+  "EXE_FILES" => [
+    "bin/xcs2json.pl"
+  ],
   "LICENSE" => "perl",
   "NAME" => "TBX::XCS",
   "PREREQ_PM" => {
     "Carp" => 0,
     "Data::Dumper" => 0,
+    "Exporter::Easy" => 0,
+    "JSON" => 0,
     "XML::Twig" => 0,
     "feature" => 0,
     "strict" => 0,
@@ -35,11 +39,13 @@ my %WriteMakefileArgs = (
     "File::Temp" => 0,
     "FindBin" => 0,
     "Path::Tiny" => 0,
+    "Test::Base" => 0,
     "Test::Exception" => 0,
     "Test::More" => "0.88",
+    "Test::NoWarnings" => 0,
     "Test::Warn" => 0
   },
-  "VERSION" => "0.02",
+  "VERSION" => "0.03",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -17,7 +17,7 @@ my %module_build_args = (
     "Nathan Glenn <garfieldnate\@gmail.com>"
   ],
   "dist_name" => "TBX-XCS",
-  "dist_version" => "0.02",
+  "dist_version" => "0.03",
   "license" => "perl",
   "module_name" => "TBX::XCS",
   "recommends" => {},
@@ -25,21 +25,27 @@ my %module_build_args = (
   "requires" => {
     "Carp" => 0,
     "Data::Dumper" => 0,
+    "Exporter::Easy" => 0,
+    "JSON" => 0,
     "XML::Twig" => 0,
     "feature" => 0,
     "perl" => "5.010",
     "strict" => 0,
     "warnings" => 0
   },
-  "script_files" => [],
+  "script_files" => [
+    "bin/xcs2json.pl"
+  ],
   "test_requires" => {
     "File::Find" => 0,
     "File::Slurp" => 0,
     "File::Temp" => 0,
     "FindBin" => 0,
     "Path::Tiny" => 0,
+    "Test::Base" => 0,
     "Test::Exception" => 0,
     "Test::More" => "0.88",
+    "Test::NoWarnings" => 0,
     "Test::Warn" => 0
   }
 );

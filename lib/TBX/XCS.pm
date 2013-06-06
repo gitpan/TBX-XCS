@@ -11,20 +11,26 @@ use strict;
 use warnings;
 use XML::Twig;
 use feature 'say';
+use JSON;
 use Carp;
+#carp from calling package, not from here
+our @CARP_NOT = qw(TBX::XCS TBX::XCS::JSON);
 use Data::Dumper;
-our $VERSION = '0.02'; # VERSION
+our $VERSION = '0.03'; # VERSION
 
 # ABSTRACT: Extract data from an XCS file
 
 
 #default: read XCS file and dump data to STDOUT
-__PACKAGE__->new()->_run unless caller;
+__PACKAGE__->new()->_run(@ARGV) unless caller;
 
 
 sub new {
-    my ($class) = @_;
+    my ($class, @args) = @_;
     my $self = bless {}, $class;
+    if(@args){
+        $self->parse(@args);
+    }
     return $self;
 }
 
@@ -43,9 +49,9 @@ sub parse {
     }else{
         croak 'Need to specify either a file or a string pointer with XCS contents';
     }
-    $self->{xcs_constraints} = $self->{twig}->{xcs_constraints};
-    $self->{xcs_name} = $self->{twig}->{xcs_name};
-    $self->{xcs_title} = $self->{twig}->{xcs_title};
+    $self->{data}->{constraints} = $self->{twig}->{xcs_constraints};
+    $self->{data}->{name} = $self->{twig}->{xcs_name};
+    $self->{data}->{title} = $self->{twig}->{xcs_title};
     return;
 }
 
@@ -59,39 +65,53 @@ sub _init {
 sub _run {
     my ($self, $file) = @_;
     $self->parse(file => $file);
-    print Dumper $self->{twig}->{xcs_constraints};
+    print Dumper $self->{data}->{constraints};
     return;
 }
 
 
 sub get_languages {
     my ($self) = @_;
-    return $self->{xcs_constraints}->{languages};
+    return $self->{data}->{constraints}->{languages};
 }
 
 
 sub get_ref_objects {
     my ($self) = @_;
-    return $self->{xcs_constraints}->{refObjects} ;
+    return $self->{data}->{constraints}->{refObjects} ;
 }
 
 
 sub get_data_cats {
     my ($self) = @_;
-    return $self->{xcs_constraints}->{datCatSet};
+    return $self->{data}->{constraints}->{datCatSet};
 }
 
 
 sub get_title {
     my ($self) = @_;
-    return $self->{xcs_title};
+    return $self->{data}->{title};
 }
 
 
 sub get_name {
     my ($self) = @_;
-    return $self->{xcs_name};
+    return $self->{data}->{name};
 }
+
+my @meta_data_cats = qw(
+    adminNote
+    admin
+    descrip
+    descripNote
+    hi
+    ref
+    termNote
+    transac
+    transacNote
+    xref
+    termCompList
+);
 
 # these are taken from the core structure DTD
 # the types are listed on pg 12 of TBX_spec_OSCAR.pdf
@@ -228,6 +248,7 @@ sub _refObjectDefSet {
 sub _dataCat {
     my ($twig, $el) = @_;
     (my $type = $el->tag) =~ s/Spec$//;
+    _check_meta_cat($type);
     my $data = {};
     $data->{name} = $el->att('name');
     if( my $datCatId = $el->att('datcatId') ){
@@ -238,7 +259,8 @@ sub _dataCat {
     #if its meta data element does not take a target attribute, and
     #if it does not apply to term components,
     #this element will be empty and have no attributes specified.
-    my $contents = $el->first_child('contents');
+    my $contents = $el->first_child('contents')
+        or croak 'No contents element in ' . $el->tag . '[@name=' . $el->att('name') . ']';
 
     #check restrictions on datatypes
     my $datatype = $contents->att('datatype');
@@ -246,10 +268,8 @@ sub _dataCat {
         if($type eq 'termCompList'){
             carp 'Ignoring datatype value in termCompList contents element';
         }
-        elsif(! exists $allowed_datatypes->{$type}->{$datatype} ){
-            croak "Can't set datatype of $type to $datatype. Must be " .
-                join (' or ',
-                    keys %{ $allowed_datatypes->{$type} } ) . '.';
+        else{
+            _check_datatype($type, $datatype);
         }
     }else{
         $datatype = $default_datatype{$type};
@@ -262,7 +282,7 @@ sub _dataCat {
         }
     }
     if ($contents->att('forTermComp')){
-        $data->{forTermComp} = $contents->att('forTermComp') eq 'yes' ? 1 : 0;
+        $data->{forTermComp} = $contents->att('forTermComp');;
     }
 
     if ($contents->att('targetType')){
@@ -273,10 +293,7 @@ sub _dataCat {
     if($type eq 'descrip'){
         if(my $levels = $el->first_child('levels')->text){
             $data->{levels} = [split ' ', $levels];
-            if(!_levels_ok($data->{levels})){
-                croak "Bad levels in descrip[\@name=$data->{name}]. " .
-                    '<levels> may only include term, termEntry, and langSet';
-            }
+            _check_levels($data);
         }else{
             #todo: not sure if this is the right behavior for an empty <levels/>
             $data->{levels} = [qw(langSet termEntry term)]
@@ -287,11 +304,39 @@ sub _dataCat {
     return;
 }
 
+sub _check_meta_cat {
+    my ($meta_cat) = @_;
+    if(! grep {$_ eq $meta_cat} @meta_data_cats ){
+        croak "unknown meta data category: $meta_cat";
+    }
+    return;
+}
+
+sub _get_default_datatype {
+    my ($meta_cat) = @_;
+    return $default_datatype{$meta_cat};
+}
+
+sub _check_datatype {
+    my ($meta_cat, $datatype) = @_;
+    if(! exists $allowed_datatypes->{$meta_cat}->{$datatype} ){
+        croak "Can't set datatype of $meta_cat to $datatype. Must be " .
+            join (' or ',
+                keys %{ $allowed_datatypes->{$meta_cat} } ) . '.';
+    }
+    return;
+}
+
 #verify the contents of <levels>
-sub _levels_ok {
-    my ($levels) = @_;
-    my @invalid = grep { $_ !~ /^(?:term|termEntry|langSet)$/ } @$levels;
-    return (@invalid == 0);
+sub _check_levels {
+    my ($data) = @_;
+    my @invalid =
+        grep { $_ !~ /^(?:term|termEntry|langSet)$/ } @{$data->{levels}};
+    if(@invalid){
+        croak "Bad levels in descrip[\@name=$data->{name}]. " .
+            '<levels> may only include term, termEntry, and langSet';
+    }
+    return;
 }
 
 1;
@@ -306,7 +351,7 @@ TBX::XCS - Extract data from an XCS file
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 
@@ -326,7 +371,7 @@ be able to serialize the contained information into a new XCS file.
 
 =head2 C<new>
 
-Creates a new XML::TBX::Dialect::XCS object.
+Creates a new TBX::XCS object.
 
 =head2 C<parse>
 
@@ -404,7 +449,7 @@ would yield the data structure below:
           'choices' => ['animate', 'inanimate', 'otherAnimacy'],
           'datatype' => 'picklist',
           'datCatId' => 'ISO12620A-020204',
-          'forTermComp' => 1,
+          'forTermComp' => 'yes',
           'name' => 'animacy'
         }],
       'xref' => [{
@@ -438,7 +483,8 @@ Returns the name of the XCS file, as found in the TBXXCS element.
 
 =head1 SEE ALSO
 
-The XCS and the TBX specification can be found on L<GitHub|https://github.com/byutrg/TBX-Spec/blob/master/TBX-Default/TBX_spec_OSCAR.pdf>.
+The XCS and the TBX specification can be found on
+L<GitHub|https://github.com/byutrg/TBX-Spec/blob/master/TBX-Default/TBX_spec_OSCAR.pdf>.
 
 =head1 AUTHOR
 

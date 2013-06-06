@@ -2,7 +2,7 @@ NAME
     TBX::XCS - Extract data from an XCS file
 
 VERSION
-    version 0.02
+    version 0.03
 
 SYNOPSIS
         use TBX::XCS;
@@ -19,7 +19,7 @@ DESCRIPTION
 
 METHODS
   "new"
-    Creates a new XML::TBX::Dialect::XCS object.
+    Creates a new TBX::XCS object.
 
   "parse"
     Takes a named argument, either "file" for a filename or "string" for a
@@ -96,7 +96,7 @@ METHODS
               'choices' => ['animate', 'inanimate', 'otherAnimacy'],
               'datatype' => 'picklist',
               'datCatId' => 'ISO12620A-020204',
-              'forTermComp' => 1,
+              'forTermComp' => 'yes',
               'name' => 'animacy'
             }],
           'xref' => [{

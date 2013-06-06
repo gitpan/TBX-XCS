@@ -42,6 +42,8 @@
          "requires" : {
             "Carp" : "0",
             "Data::Dumper" : "0",
+            "Exporter::Easy" : "0",
+            "JSON" : "0",
             "XML::Twig" : "0",
             "feature" : "0",
             "perl" : "5.010",
@@ -56,8 +58,10 @@
             "File::Temp" : "0",
             "FindBin" : "0",
             "Path::Tiny" : "0",
+            "Test::Base" : "0",
             "Test::Exception" : "0",
             "Test::More" : "0.88",
+            "Test::NoWarnings" : "0",
             "Test::Warn" : "0"
          }
       }
@@ -65,7 +69,11 @@
    "provides" : {
       "TBX::XCS" : {
          "file" : "lib/TBX/XCS.pm",
-         "version" : "0.02"
+         "version" : "0.03"
+      },
+      "TBX::XCS::JSON" : {
+         "file" : "lib/TBX/XCS/JSON.pm",
+         "version" : "0.03"
       }
    },
    "release_status" : "stable",
@@ -84,21 +92,25 @@
          "web" : "https://github.com/byutrg/TBX-XCS"
       }
    },
-   "version" : "0.02",
+   "version" : "0.03",
    "x_BuiltWith" : {
       "modules" : {
          "Carp" : "1.26",
          "Data::Dumper" : "2.145",
+         "Exporter::Easy" : "0.16",
          "File::Find" : "1.20",
          "File::Slurp" : "9999.19",
          "File::Temp" : "0.22",
          "FindBin" : "1.51",
+         "JSON" : "2.53",
          "Module::Build" : "0.4002",
          "Path::Tiny" : "0.015",
          "Pod::Coverage::TrustPod" : "0.100002",
+         "Test::Base" : "0.60",
          "Test::CPAN::Meta" : "0.23",
          "Test::Exception" : "0.31",
          "Test::More" : "0.98",
+         "Test::NoWarnings" : "1.04",
          "Test::Pod" : "1.45",
          "Test::Pod::Coverage" : "1.08",
          "Test::Warn" : "0.24",
