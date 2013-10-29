@@ -17,7 +17,7 @@ our @CARP_NOT = qw(TBX::XCS::JSON);
 use Exporter::Easy (
     OK => [qw(xcs_from_json json_from_xcs)],
 );
-our $VERSION = '0.03'; # VERSION
+our $VERSION = '0.04'; # VERSION
 
 # ABSTRACT: Read and write XCS data in JSON
 
@@ -211,7 +211,7 @@ TBX::XCS::JSON - Read and write XCS data in JSON
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 

@@ -58,6 +58,7 @@
 ^MYMETA\.
 
 #END DEFAULT MANIFEST SKIP
+
 # sublime project
 \.sublime-project
 \.sublime-workspace

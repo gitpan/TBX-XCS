@@ -8,7 +8,6 @@ META.json
 META.yml
 Makefile.PL
 README
-SIGNATURE
 bin/xcs2json.pl
 dist.ini
 lib/TBX/XCS.pm

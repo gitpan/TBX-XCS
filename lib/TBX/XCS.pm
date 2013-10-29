@@ -16,7 +16,7 @@ use Carp;
 #carp from calling package, not from here
 our @CARP_NOT = qw(TBX::XCS TBX::XCS::JSON);
 use Data::Dumper;
-our $VERSION = '0.03'; # VERSION
+our $VERSION = '0.04'; # VERSION
 
 # ABSTRACT: Extract data from an XCS file
 
@@ -351,7 +351,7 @@ TBX::XCS - Extract data from an XCS file
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
