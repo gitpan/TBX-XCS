@@ -16,7 +16,7 @@ use Carp;
 #carp from calling package, not from here
 our @CARP_NOT = qw(TBX::XCS TBX::XCS::JSON);
 use Data::Dumper;
-our $VERSION = '0.04'; # VERSION
+our $VERSION = '0.05'; # VERSION
 
 # ABSTRACT: Extract data from an XCS file
 
@@ -322,7 +322,7 @@ sub _check_datatype {
     if(! exists $allowed_datatypes->{$meta_cat}->{$datatype} ){
         croak "Can't set datatype of $meta_cat to $datatype. Must be " .
             join (' or ',
-                keys %{ $allowed_datatypes->{$meta_cat} } ) . '.';
+                sort keys %{ $allowed_datatypes->{$meta_cat} } ) . '.';
     }
     return;
 }
@@ -351,7 +351,7 @@ TBX::XCS - Extract data from an XCS file
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 

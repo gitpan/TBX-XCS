@@ -11,7 +11,7 @@ use strict;
 use warnings;
 # TODO: test this
 # PODNAME: xcs2json.pl
-our $VERSION = '0.04'; # VERSION
+our $VERSION = '0.05'; # VERSION
 # ABSTRACT: Print a JSON representation of the input XCS file
 use TBX::XCS;
 use TBX::XCS::JSON qw(json_from_xcs);
@@ -27,7 +27,7 @@ xcs2json.pl - Print a JSON representation of the input XCS file
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 AUTHOR
 

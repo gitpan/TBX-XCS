@@ -2,7 +2,7 @@ NAME
     TBX::XCS - Extract data from an XCS file
 
 VERSION
-    version 0.04
+    version 0.05
 
 SYNOPSIS
         use TBX::XCS;

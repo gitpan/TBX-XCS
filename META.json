@@ -69,11 +69,11 @@
    "provides" : {
       "TBX::XCS" : {
          "file" : "lib/TBX/XCS.pm",
-         "version" : "0.04"
+         "version" : "0.05"
       },
       "TBX::XCS::JSON" : {
          "file" : "lib/TBX/XCS/JSON.pm",
-         "version" : "0.04"
+         "version" : "0.05"
       }
    },
    "release_status" : "stable",
@@ -92,7 +92,7 @@
          "web" : "https://github.com/byutrg/p5-TBX-XCS"
       }
    },
-   "version" : "0.04",
+   "version" : "0.05",
    "x_BuiltWith" : {
       "modules" : {
          "Carp" : "1.26",
